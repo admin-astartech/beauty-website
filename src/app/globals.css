@@ -1,0 +1,135 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+@theme {
+  /* Soft neutrals palette for boutique beauty */
+  --color-pageBg: #FEFCF8; /* Warm cream background */
+  --color-primary: #D4A574; /* Soft taupe */
+  --color-primary-light: #E8C4A0; /* Light taupe */
+  --color-primary-dark: #B8956A; /* Dark taupe */
+  --color-accent: #F4E4D6; /* Blush pink */
+  --color-accent-light: #F9F0E8; /* Light blush */
+  --color-text-primary: #2C2C2C; /* Soft black */
+  --color-text-secondary: #6B6B6B; /* Medium gray */
+  --color-text-light: #9B9B9B; /* Light gray */
+  --color-border: #E5D5C7; /* Soft beige border */
+  --color-hover: #F0E6D8; /* Hover state */
+  --color-button-primary: #D4A574;
+  --color-button-hover: #C19A66;
+}
+
+/* Typography - Elegant serif for headings, clean sans-serif for body */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair);
+  color: var(--color-text-primary);
+}
+
+p,
+button,
+a,
+label,
+li,
+div,
+strong {
+  font-family: var(--font-montserrat);
+  color: var(--color-text-secondary);
+}
+
+/* Font utility classes */
+.font-playfair {
+  font-family: var(--font-playfair);
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-accent-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+.markdown-ol li > p {
+  margin: 0px 0px -16px !important;
+}
+
+.markdown-ol {
+  margin-left: 0px !important;
+}
+
+/* Slide-in animations */
+@keyframes slide-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.8s ease-out forwards;
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 0.8s ease-out forwards;
+}
+
+/* Mobile-specific animations */
+@media (max-width: 1023px) {
+  .animate-slide-in-left,
+  .animate-slide-in-right {
+    animation: slide-in-up 0.8s ease-out forwards;
+  }
+}
