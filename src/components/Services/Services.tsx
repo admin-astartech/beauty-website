@@ -1,6 +1,8 @@
 "use client";
 
-import { Eye, Scissors, Sparkles, Clock, DollarSign } from "lucide-react";
+import { Eye, Scissors, Sparkles, Clock } from "lucide-react";
+import { Button } from "../Button";
+import { useEffect, useRef, useState } from "react";
 
 const services = [
   {
@@ -38,11 +40,50 @@ const services = [
 ];
 
 export function Services() {
+  const [visibleElements, setVisibleElements] = useState<Set<number>>(new Set());
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-index') || '0');
+            setVisibleElements(prev => new Set([...prev, index]));
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    // Observe section header
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    // Observe service cards
+    cardRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="services" className="py-20 bg-pageBg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div 
+          ref={sectionRef}
+          data-index="0"
+          className={`text-center mb-16 transition-all duration-1000 ease-out ${
+            visibleElements.has(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="flex justify-center mb-6">
             <div className="flex items-center space-x-2 text-primary">
               <Sparkles className="h-6 w-6" />
@@ -50,7 +91,7 @@ export function Services() {
               <Sparkles className="h-6 w-6" />
             </div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-playfair font-bold text-text-primary mb-6">
+          <h2 className="text-4xl md:text-7xl font-meow-script font-bold text-text-primary mb-6">
             Our Services
           </h2>
           <p className="text-xl text-text-secondary max-w-3xl mx-auto">
@@ -63,22 +104,33 @@ export function Services() {
           {services.map((service, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-border"
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              data-index={index + 1}
+              className={`cursor-pointer bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-border ${
+                visibleElements.has(index + 1) 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-8'
+              }`}
+              style={{
+                transitionDelay: visibleElements.has(index + 1) ? `${index * 150}ms` : '0ms'
+              }}
             >
-              {/* Service Icon */}
-              <div className="flex items-center justify-center w-16 h-16 bg-accent-light rounded-full mb-6">
-                <service.icon className="h-8 w-8 text-primary" />
-              </div>
+              <div className="flex items-center gap-4">
+                {/* Service Icon */}
+                <div className="flex items-center justify-center w-16 h-16 bg-accent-light rounded-full mb-6">
+                  <service.icon className="h-8 w-8 text-primary" />
+                </div>
 
-              {/* Service Info */}
-              <div className="mb-6">
-                <h3 className="text-2xl font-playfair font-bold text-text-primary mb-3">
+                {/* Service Info */}
+                <h3 className="text-2xl font-playfair font-bold text-text-primary mb-8">
                   {service.title}
                 </h3>
-                <p className="text-text-secondary mb-4 leading-relaxed">
-                  {service.description}
-                </p>
               </div>
+              <p className="text-text-secondary mb-4 leading-relaxed">
+                {service.description}
+              </p>
 
               {/* Service Details */}
               <div className="flex items-center justify-between mb-6">
@@ -87,8 +139,7 @@ export function Services() {
                   <span className="text-sm font-medium">{service.duration}</span>
                 </div>
                 <div className="flex items-center space-x-2 text-primary">
-                  <DollarSign className="h-4 w-4" />
-                  <span className="text-lg font-bold">{service.price}</span>
+                  <span className="text-3xl font-bold">{service.price}</span>
                 </div>
               </div>
 
@@ -107,20 +158,27 @@ export function Services() {
                 </ul>
               </div>
 
-              {/* CTA Button */}
-              <a
-                href="#contact"
-                className="block w-full bg-button-primary text-white text-center py-3 rounded-full hover:bg-button-hover transition-colors duration-200 font-medium"
-              >
-                Book This Service
-              </a>
+              <div className="max-w-60 mx-auto">
+                {/* CTA Button */}
+                <Button href="#contact">
+                  Book This Service
+                </Button>
+              </div>
             </div>
           ))}
         </div>
 
         {/* Additional Info */}
-        <div className="mt-16 text-center">
-          <div className="bg-accent-light rounded-2xl p-8 max-w-4xl mx-auto">
+        <div 
+          ref={(el) => {
+            cardRefs.current[4] = el;
+          }}
+          data-index="5"
+          className={`mt-16 text-center transition-all duration-1000 ease-out delay-300 ${
+            visibleElements.has(5) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="bg-accent-light rounded-2xl drop-shadow-xl! shadow-sm! p-8 max-w-4xl mx-auto">
             <h3 className="text-2xl font-playfair font-bold text-text-primary mb-4">
               Why Choose By Tia Maria Beauty?
             </h3>

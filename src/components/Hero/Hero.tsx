@@ -1,10 +1,50 @@
 "use client";
 
-import { Calendar, Star, Sparkles } from "lucide-react";
+import { Calendar, Star, ArrowRight } from "lucide-react";
+import { Button, ButtonType } from "../Button";
+import { useEffect, useState } from "react";
 
 export function Hero() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const renderFeature = (text: string) => {
+    return (
+      <div className="relative flex items-center space-x-2 text-text-secondary">
+        <div className="inset-0 absolute bg-white/20! text-black blur-lg"></div>
+        <Star className="h-5 w-5 text-primary fill-primary relative z-10 drop-shadow-sm" />
+        <span className="font-semibold text-slate-100! relative z-10 drop-shadow-sm">{text}</span>
+      </div>
+    );
+  };
+
+  const renderTrustIndicator = (text: string, value: string) => {
+    return (
+      <div className="relative text-center flex flex-col items-center gap-3">
+        <div className="inset-0 absolute bg-white/5! z-0! blur-lg"></div>
+        <div className="text-5xl font-playfair font-bold text-slate-100/90! relative z-10 drop-shadow-lg">{value}</div>
+        <div className="text-md font-semibold text-slate-100/90! relative z-10 drop-shadow-md">{text}</div>
+      </div>
+    );
+  };
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-pageBg to-accent-light">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center"
+      style={{
+        backgroundImage: 'url(/Eyebrow_Model.jpg)',
+        backgroundAttachment: 'fixed',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+      }}
+    >
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/20 to-black/40"></div>
+
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-20 w-32 h-32 bg-primary rounded-full blur-3xl"></div>
@@ -12,86 +52,72 @@ export function Hero() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-primary-light rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="max-w-4xl mx-auto">
-          {/* Decorative Element */}
-          <div className="flex justify-center mb-6">
-            <div className="flex items-center space-x-2 text-primary">
-              <Sparkles className="h-6 w-6" />
-              <div className="w-16 h-px bg-primary"></div>
-              <Sparkles className="h-6 w-6" />
-            </div>
-          </div>
-
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-8xl mx-auto">
           {/* Main Heading */}
-          <h1 className="text-5xl md:text-7xl font-playfair font-bold text-text-primary mb-6 leading-tight">
-            By Tia Maria
-            <span className="block text-primary">Beauty</span>
+          <h1 className={`text-5xl md:text-[120px] font-meow-script font-bold text-[#584429]! mb-6 leading-tight transition-all duration-1000 ease-out ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            <div className="relative">
+              <div className="inset-0 absolute bg-white/5! z-0! blur-lg"></div>
+              <span className="block text-black/70! font-playfair relative z-10 drop-shadow-lg">By
+              </span>
+            </div>
+            <div className="relative">
+              <div className="items-center gap-2 inset-0 absolute bg-white/5! z-0! blur-lg"></div>
+              <span className="text-black/70! font-meow-script relative z-10 drop-shadow-lg">Tia Maria</span>
+            </div>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto leading-relaxed">
-            Professional brow artistry and beauty services that enhance your natural beauty with precision and care.
+          <p className={`items-center text-xl text-black font-bold md:text-2xl text-text-secondary mb-8 max-w-4xl mx-auto text-center transition-all duration-1000 ease-out delay-200 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            <div className="relative">
+              <div className="inset-0 absolute bg-white/5! text-black blur-lg"></div>
+              <span className={`text-slate-100/90! relative z-10 drop-shadow-md transition-all duration-1000 ease-out ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}>Professional brow artistry and beauty services that enhance your natural beauty with precision and care.</span>
+            </div>
           </p>
 
-          {/* Features */}
-          <div className="flex flex-wrap justify-center gap-6 mb-12">
-            <div className="flex items-center space-x-2 text-text-secondary">
-              <Star className="h-5 w-5 text-primary" />
-              <span className="font-medium">Expert Brow Artistry</span>
-            </div>
-            <div className="flex items-center space-x-2 text-text-secondary">
-              <Star className="h-5 w-5 text-primary" />
-              <span className="font-medium">Natural Results</span>
-            </div>
-            <div className="flex items-center space-x-2 text-text-secondary">
-              <Star className="h-5 w-5 text-primary" />
-              <span className="font-medium">Personalized Care</span>
-            </div>
-          </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="#contact"
-              className="bg-button-primary text-white px-8 py-4 rounded-full hover:bg-button-hover transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 text-lg font-medium shadow-lg"
-            >
+          <div className={`flex flex-col sm:flex-row gap-15 justify-center my-12 transition-all duration-1000 ease-out delay-400 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            <Button href="#contact">
               <Calendar className="h-5 w-5" />
               <span>Book Appointment</span>
-            </a>
-            <a
-              href="#services"
-              className="border-2 border-primary text-primary px-8 py-4 rounded-full hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center space-x-2 text-lg font-medium"
-            >
+            </Button>
+            <Button
+              type={ButtonType.SECONDARY}
+              href="#services">
               <span>View Services</span>
-            </a>
+              <ArrowRight className="h-5 w-5" />
+            </Button>
           </div>
+          {/* Features */}
+          <div className={`flex flex-wrap justify-center gap-15 mb-12 transition-all duration-1000 ease-out delay-600 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            {renderFeature("Expert Brow Artistry")}
+            {renderFeature("Natural Results")}
+            {renderFeature("Personalized Care")}
+          </div>
+
 
           {/* Trust Indicators */}
-          <div className="mt-16 pt-8 border-t border-border">
-            <p className="text-text-light text-sm mb-4">Trusted by clients for</p>
-            <div className="flex flex-wrap justify-center gap-8 text-text-secondary">
-              <div className="text-center">
-                <div className="text-2xl font-playfair font-bold text-primary">500+</div>
-                <div className="text-sm">Happy Clients</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-playfair font-bold text-primary">5+</div>
-                <div className="text-sm">Years Experience</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-playfair font-bold text-primary">100%</div>
-                <div className="text-sm">Satisfaction</div>
-              </div>
+          <div className={`relative mt-12 pt-8 border-t border-border/40 transition-all duration-1000 ease-out delay-800 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
+            <p className="text-text-light text-md mb-2 text-slate-100/90! font-semibold drop-shadow-sm">Trusted by clients for</p>
+            <div className="flex flex-wrap justify-center gap-50 text-white!">
+              {renderTrustIndicator("Happy Clients", "500+")}
+              {renderTrustIndicator("Years Experience", "5+")}
+              {renderTrustIndicator("Satisfaction", "100%")}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-primary rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>

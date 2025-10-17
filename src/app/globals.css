@@ -4,17 +4,18 @@
 @theme {
   /* Soft neutrals palette for boutique beauty */
   --color-pageBg: #FEFCF8; /* Warm cream background */
-  --color-primary: #D4A574; /* Soft taupe */
+  --color-primary: #C19A66; /* Soft taupe */
   --color-primary-light: #E8C4A0; /* Light taupe */
   --color-primary-dark: #B8956A; /* Dark taupe */
   --color-accent: #F4E4D6; /* Blush pink */
   --color-accent-light: #F9F0E8; /* Light blush */
-  --color-text-primary: #2C2C2C; /* Soft black */
+  --color-text-primary: #252525; /* Soft black */
   --color-text-secondary: #6B6B6B; /* Medium gray */
   --color-text-light: #9B9B9B; /* Light gray */
   --color-border: #E5D5C7; /* Soft beige border */
   --color-hover: #F0E6D8; /* Hover state */
-  --color-button-primary: #D4A574;
+  --color-button-primary: #584429;
+  --color-button-secondary: #F9F0E8;
   --color-button-hover: #C19A66;
 }
 
@@ -24,9 +25,14 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+a {
   font-family: var(--font-playfair);
   color: var(--color-text-primary);
+}
+span {
+  font-family: var(--font-playfair);
+  letter-spacing: 0.05em;
 }
 
 p,
@@ -47,6 +53,10 @@ strong {
 
 .font-montserrat {
   font-family: var(--font-montserrat);
+}
+
+.font-meow-script {
+  font-family: var(--font-meow-script);
 }
 
 /* Smooth scrolling */

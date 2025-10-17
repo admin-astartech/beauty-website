@@ -1,55 +1,100 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Eye, Sparkles } from "lucide-react";
+import { Button } from "../Button";
 
 const galleryImages = [
   {
     id: 1,
     before: "/api/placeholder/300/400",
     after: "/api/placeholder/300/400",
-    service: "Brow Shaping & Tinting",
-    description: "Natural brow enhancement with precision shaping"
+    service: "Brow Shaping",
+    description: "Natural brow arch with precision shaping",
+    overlay: "/Brow_Shaping.jpg"
   },
   {
     id: 2,
     before: "/api/placeholder/300/400",
     after: "/api/placeholder/300/400",
-    service: "Brow Lamination",
-    description: "Transformed unruly brows into perfectly groomed arches"
+    service: "Lash Lifting",
+    description: "Transformed unruly lashes into perfectly curled and lifted lashes",
+    overlay: "/Lash_Lifting.png"
   },
   {
     id: 3,
     before: "/api/placeholder/300/400",
     after: "/api/placeholder/300/400",
-    service: "Lash Lifting & Tinting",
-    description: "Enhanced natural lashes for a wide-eyed look"
+    service: "Lash Tinting",
+    description: "Natural lash enhancement",
+    overlay: "/Lash_Tinting.png"
   },
   {
     id: 4,
     before: "/api/placeholder/300/400",
     after: "/api/placeholder/300/400",
     service: "Microblading",
-    description: "Semi-permanent brow enhancement with natural hair strokes"
+    description: "Semi-permanent brow enhancement with natural hair strokes",
+    overlay: "/Microblading.jpg"
   },
   {
     id: 5,
     before: "/api/placeholder/300/400",
     after: "/api/placeholder/300/400",
-    service: "Brow Shaping & Tinting",
-    description: "Perfect arch definition and natural color enhancement"
+    service: "Brow Tinting",
+    description: "Natural brow enhancement",
+    overlay: "/Brow_Tinting_V2.png"
   },
   {
     id: 6,
     before: "/api/placeholder/300/400",
     after: "/api/placeholder/300/400",
     service: "Brow Lamination",
-    description: "Lifted and styled brows for everyday elegance"
+    description: "Lifted and styled brows for everyday elegance",
+    overlay: "/Brow_Lamination.png"
   }
 ];
 
 export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [visibleElements, setVisibleElements] = useState<Set<number>>(new Set());
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-index') || '0');
+            setVisibleElements(prev => new Set([...prev, index]));
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    // Observe section header
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    // Observe gallery cards
+    cardRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    // Observe CTA section
+    if (ctaRef.current) {
+      observer.observe(ctaRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const openModal = (index: number) => {
     setSelectedImage(index);
@@ -75,7 +120,13 @@ export function Gallery() {
     <section id="gallery" className="py-20 bg-pageBg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div 
+          ref={sectionRef}
+          data-index="0"
+          className={`text-center mb-16 transition-all duration-1000 ease-out ${
+            visibleElements.has(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="flex justify-center mb-6">
             <div className="flex items-center space-x-2 text-primary">
               <Sparkles className="h-6 w-6" />
@@ -83,7 +134,7 @@ export function Gallery() {
               <Sparkles className="h-6 w-6" />
             </div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-playfair font-bold text-text-primary mb-6">
+          <h2 className="text-4xl md:text-7xl font-meow-script font-bold text-text-primary mb-6">
             Transformation Gallery
           </h2>
           <p className="text-xl text-text-secondary max-w-3xl mx-auto">
@@ -96,7 +147,18 @@ export function Gallery() {
           {galleryImages.map((image, index) => (
             <div
               key={image.id}
-              className="group cursor-pointer"
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              data-index={index + 1}
+              className={`group cursor-pointer transition-all duration-500 ease-out ${
+                visibleElements.has(index + 1) 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-8'
+              }`}
+              style={{
+                transitionDelay: visibleElements.has(index + 1) ? `${index * 150}ms` : '0ms'
+              }}
               onClick={() => openModal(index)}
             >
               <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-2">
@@ -131,7 +193,10 @@ export function Gallery() {
                   </div>
                   
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                  <div 
+                    className="absolute inset-0 transition-all duration-300 flex items-center justify-center bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${image.overlay})` }}
+                  >
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="bg-white rounded-full p-3">
                         <Eye className="h-6 w-6 text-primary" />
@@ -155,20 +220,23 @@ export function Gallery() {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center mt-16">
-          <div className="bg-accent-light rounded-2xl p-8 max-w-2xl mx-auto">
+        <div 
+          ref={ctaRef}
+          data-index="7"
+          className={`text-center mt-16 transition-all duration-1000 ease-out delay-300 ${
+            visibleElements.has(7) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="bg-accent-light drop-shadow-xl! shadow-sm! rounded-2xl p-8 max-w-2xl mx-auto">
             <h3 className="text-2xl font-playfair font-bold text-text-primary mb-4">
               Ready for Your Transformation?
             </h3>
             <p className="text-text-secondary mb-6">
               Book your consultation today and discover how we can enhance your natural beauty.
             </p>
-            <a
-              href="#contact"
-              className="bg-button-primary text-white px-8 py-3 rounded-full hover:bg-button-hover transition-colors duration-200 font-medium"
-            >
+            <Button href="#contact">
               Book Your Consultation
-            </a>
+            </Button>
           </div>
         </div>
       </div>

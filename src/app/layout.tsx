@@ -1,4 +1,4 @@
-import { Montserrat, Playfair_Display } from "next/font/google";
+import { Montserrat, Playfair_Display,  Meow_Script } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import ReactQueryProvider from "@/providers/QueryProvider";
@@ -19,6 +19,12 @@ const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
 });
 
+const meowScript = Meow_Script({
+  variable: "--font-meow-script",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,7 +37,7 @@ export default function RootLayout({
         <meta name="description" content="By Tia Maria Beauty - Professional brow artistry and beauty services. Expert brow shaping, tinting, lamination, lash lifting, and microblading in a boutique setting." />
         <meta name="keywords" content="brow artistry, microblading, brow shaping, lash lifting, beauty services, Tia Maria" />
       </head>
-      <body className={`${montserrat.variable} ${playfairDisplay.variable} bg-pageBg`} >
+      <body className={`${montserrat.variable} ${playfairDisplay.variable} ${meowScript.variable} bg-pageBg`} >
         <ApplicationProvider>
           <ReactQueryProvider>
             <Suspense>

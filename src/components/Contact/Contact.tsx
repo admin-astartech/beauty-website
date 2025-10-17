@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
+import { Button, ButtonType } from "../Button";
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ export function Contact() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     // Handle form submission here
     console.log("Form submitted:", formData);
@@ -47,7 +48,7 @@ export function Contact() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-playfair font-bold text-text-primary mb-6">
+          <h2 className="text-4xl md:text-7xl font-meow-script font-bold text-text-primary mb-6">
             Book Your Appointment
           </h2>
           <p className="text-xl text-text-secondary max-w-3xl mx-auto">
@@ -61,7 +62,7 @@ export function Contact() {
             <h3 className="text-2xl font-playfair font-bold text-text-primary mb-8">
               Get In Touch
             </h3>
-            
+
             <div className="space-y-6">
               {/* Phone */}
               <div className="flex items-start space-x-4">
@@ -123,24 +124,20 @@ export function Contact() {
               <p className="text-text-secondary mb-6">
                 Prefer to call? We&apos;re here to help you find the perfect appointment time.
               </p>
-              <a
-                href="tel:+15551234567"
-                className="bg-button-primary text-white px-6 py-3 rounded-full hover:bg-button-hover transition-colors duration-200 flex items-center space-x-2 font-medium"
-              >
+              <Button
+              type={ButtonType.SECONDARY}
+              className="flex gap-2 drop-shadow-sm! shadow-sm!"
+              href="tel:+1234567890">
                 <Phone className="h-4 w-4" />
                 <span>Call Now</span>
-              </a>
+              </Button>
             </div>
           </div>
 
           {/* Contact Form */}
           <div>
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h3 className="text-2xl font-playfair font-bold text-text-primary mb-6">
-                Send a Message
-              </h3>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit as unknown as React.FormEventHandler<HTMLFormElement>} className="space-y-6">
                 {/* Name */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-text-primary mb-2">
@@ -229,13 +226,13 @@ export function Contact() {
                 </div>
 
                 {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full bg-button-primary text-white py-4 rounded-lg hover:bg-button-hover transition-colors duration-200 flex items-center justify-center space-x-2 font-medium text-lg"
-                >
+                <Button
+                  type={ButtonType.PRIMARY}
+                  className="w-full flex gap-2 drop-shadow-sm!"
+                  onClick={handleSubmit}>
                   <Send className="h-5 w-5" />
-                  <span>Send Message</span>
-                </button>
+                  Send Message
+                </Button>
               </form>
 
               <p className="text-sm text-text-light mt-4 text-center">
